@@ -1,7 +1,9 @@
 import Head from "next/head";
 import Carousel from "react-multi-carousel";
 import BlogCard from "../components/home/BlogCard";
-import { getPosts } from "../services/posts";
+import WidgetPost from "../components/WidgetPost";
+import getRelatedStories from "../services/getRelatedSories";
+import getPosts from "../services/posts";
 
 const responsive = {
   superLargeDesktop: {
@@ -24,8 +26,7 @@ const responsive = {
 };
 
 export default function Home({ blogs }) {
-  // const { loading, error, data } = useQuery(getPosts);
-
+  getRelatedStories();
   return (
     <>
       <Head>
@@ -47,17 +48,29 @@ export default function Home({ blogs }) {
         <div>Item 4</div>
       </Carousel>
 
-      <div className="container mx-auto laptop:px-5 mobile:px-3 grid grid-cols-3 my-10">
+      <div className="container mx-auto laptop:px-5 mobile:px-3 grid grid-cols-3 py-10">
         <div className="col-span-2 tablet:col-span-3 space-y-7 px-14 laptop:px-0">
           {blogs.map((blog) => (
             <BlogCard key={blog.id} blog={blog} />
           ))}
         </div>
-        <div className="sticky top-0">
-          <h2>This is side bar</h2>
+        <div className="col-span-1">
+          <div className="sticky top-20 space-y-5">
+            <div className="space-y-3">
+              <h2 className="text-xl text-white font-semibold">Top Post:</h2>
+              <WidgetPost />
+              <WidgetPost />
+              <WidgetPost />
+            </div>
+            <div className="space-y-3">
+              <h2 className="text-xl text-white font-semibold">Category:</h2>
+              <WidgetPost />
+              <WidgetPost />
+              <WidgetPost />
+            </div>
+          </div>
         </div>
       </div>
-      <div className="h-72 border"></div>
     </>
   );
 }

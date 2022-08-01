@@ -1,16 +1,17 @@
 import { gql } from "@apollo/client";
 import client from "./client";
 
-const getPosts = async () => {
+const getPost = async (slug) => {
   try {
     const { data } = await client.query({
       query: gql`
-        query webStories {
-          posts(orderBy: createdAt_DESC, first: 10) {
+        query webStory {
+          post(where: { slug: "${slug}" }) {
             id
             title
-            featured
-            slug
+            content {
+              markdown
+            }
             featuredImage {
               url
             }
@@ -20,23 +21,15 @@ const getPosts = async () => {
                 url
               }
             }
-            categories {
-              name
-              slug
-            }
-            content {
-              markdown
-            }
             createdAt
           }
         }
       `,
     });
-
     return data;
   } catch (error) {
-    console.log(error);
+    console.log("single post fetch err:", error);
   }
 };
 
-export default getPosts;
+export default getPost;
