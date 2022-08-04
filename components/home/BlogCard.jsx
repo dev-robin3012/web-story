@@ -17,7 +17,7 @@ const BlogCard = ({ blog }) => {
           <Link href={`post/${blog.slug}`}>{blog.title}</Link>
         </h2>
         <div className="flex justify-center items-center gap-10 small:flex-col small:gap-2">
-          <div className="flex items-center gap-1 relative">
+          <div className="flex items-center gap-1">
             <div className="h-9 w-9 rounded-full overflow-hidden relative">
               <Image src={blog.author.avatar.url} alt={blog.author.name} layout="fill" />
             </div>

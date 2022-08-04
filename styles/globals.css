@@ -26,6 +26,12 @@ a {
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .text-shadow {
+    text-shadow: 0 2px 10px black;
+  }
+}
+
 .container {
   width: 100%;
 }
