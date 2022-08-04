@@ -1,22 +1,31 @@
 import Head from "next/head";
 import Carousel from "react-multi-carousel";
 import { LeftArrow, RightArrow } from "../components/Arrow";
-import BlogCard from "../components/home/BlogCard";
 import FeaturedCard from "../components/home/FeaturedCard";
-import WidgetPost from "../components/WidgetPost";
-import getPosts from "../services/posts";
+import StoryCard from "../components/home/StoryCard";
+import WidgetCard from "../components/WidgetCard";
+import getCategories from "../services/getCategories";
+import getFeaturedStories from "../services/getFeaturedStories";
+import getStories from "../services/getStories";
 import responsive from "../utils/carouselResConfig";
 
 export const getStaticProps = async () => {
-  try {
-    const { posts } = await getPosts();
-    return { props: { blogs: posts } };
-  } catch (error) {
-    console.log(error);
-  }
+  const featured = await getFeaturedStories();
+
+  const { posts } = await getStories();
+
+  const topStories = await posts
+    .map((a) => ({ sort: Math.random(), value: a }))
+    .sort((a, b) => a.sort - b.sort)
+    .map((a) => a.value)
+    .slice(0, 3);
+
+  const { categories } = await getCategories();
+
+  return { props: { featured: featured.posts, stories: posts, topStories, categories } };
 };
 
-const Home = ({ blogs }) => {
+const Home = ({ featured, stories, topStories, categories }) => {
   return (
     <>
       <Head>
@@ -31,36 +40,40 @@ const Home = ({ blogs }) => {
           infinite
           customLeftArrow={LeftArrow}
           customRightArrow={RightArrow}
-          itemClass="px-4"
+          itemClass="px-4 "
         >
-          <FeaturedCard />
-          <FeaturedCard />
-          <FeaturedCard />
-          <FeaturedCard />
-          <FeaturedCard />
-          <FeaturedCard />
+          {featured.map((item, key) => (
+            <FeaturedCard key={key} story={item} />
+          ))}
         </Carousel>
       </section>
 
       <section className="container mx-auto laptop:px-5 mobile:px-3 grid grid-cols-3 py-10">
         <div className="col-span-2 tablet:col-span-3 space-y-7 px-14 laptop:px-0">
-          {blogs.map((blog) => (
-            <BlogCard key={blog.id} blog={blog} />
+          {stories.map((story) => (
+            <StoryCard key={story.id} story={story} />
           ))}
         </div>
-        <aside className="col-span-1">
+        <aside className="col-span-1 tablet:col-span-3 tablet:mt-10">
           <div className="sticky top-20 space-y-5">
             <div className="space-y-3">
-              <h2 className="text-xl text-white font-semibold">Top Post:</h2>
-              <WidgetPost />
-              <WidgetPost />
-              <WidgetPost />
+              <h2 className="text-xl text-white font-semibold">Top Story:</h2>
+              {topStories.map((story, key) => (
+                <WidgetCard key={key} widget={story} />
+              ))}
             </div>
             <div className="space-y-3">
               <h2 className="text-xl text-white font-semibold">Category:</h2>
-              <WidgetPost />
-              <WidgetPost />
-              <WidgetPost />
+              <ul className="bg-white p-5 rounded-md text-xl space-y-2 pl-12">
+                {categories.map((category) => (
+                  <li key={category.id} className="list-['👉']">
+                    <span className="invisible">0</span>
+                    <span className="cursor-pointer hover:text-[#6B58FA] hover:drop-shadow-md transition-all delay-100">
+                      {category.name}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </aside>

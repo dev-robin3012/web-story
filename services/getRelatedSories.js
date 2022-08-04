@@ -9,20 +9,24 @@ const getRelatedStories = async ({ slug, categories }) => {
           posts(
               where: { 
                 slug_not: "${slug}",
-                AND: { categories_some: { slug_in: [${categories}] } } 
+                AND: { categories_some: { slug_in: ${categories} } } 
               },
               orderBy: createdAt_DESC,
               first: 3
             ) {
               title
-              categories {
+              featuredImage {
+                url
+              }
+              slug
+              author {
                 name
               }
+              createdAt
           }
         }
       `,
     });
-    // console.log(data);
     return data;
   } catch (error) {
     console.log("related stories fetching err:", error);

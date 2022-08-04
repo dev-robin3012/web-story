@@ -1,13 +1,19 @@
 import moment from "moment";
+import { MDXRemote } from "next-mdx-remote";
+import { serialize } from "next-mdx-remote/serialize";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
-import getPost from "../../services/post";
-import getPosts from "../../services/posts";
+import styles from "../../styles/story.module.css";
+
+import WidgetCard from "../../components/WidgetCard";
+import getRelatedStories from "../../services/getRelatedSories";
+import getStories from "../../services/getStories";
+import getStory from "../../services/getStory";
 
 export const getStaticPaths = async () => {
-  const { posts } = await getPosts();
+  const { posts } = await getStories();
   return {
     paths: posts.map(({ slug }) => ({ params: { slug } })),
     fallback: true,
@@ -16,11 +22,17 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async ({ params }) => {
   const { slug } = params;
-  const { post } = await getPost(slug);
-  return { props: { post } };
+  const { post } = await getStory(slug);
+  const categories = JSON.stringify(post.categories.map(({ slug }) => slug));
+
+  const { posts } = await getRelatedStories({ slug, categories });
+  // console.log(res);
+
+  const content = await serialize(post.content.markdown);
+  return { props: { post: { ...post, content }, related: posts } };
 };
 
-const Details = ({ post }) => {
+const Details = ({ post, related }) => {
   const router = useRouter();
 
   if (router.isFallback) {
@@ -37,14 +49,14 @@ const Details = ({ post }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <section className="container mx-auto grid grid-cols-3 py-5 gap-5">
-        <div className="col-span-2 bg-white p-5 rounded-lg min-h-screen space-y-3 ">
+      <section className="container mx-auto laptop:px-5 mobile:px-3 grid grid-cols-3 py-5 gap-5">
+        <div className="col-span-2 tablet:col-span-3 bg-white p-5 rounded-lg space-y-3 ">
           <figure className="space-y-3">
             <figcaption className="text-4xl font-semibold inline-flex gap-4">
               <span className="text-5xl text-[#6B58FA]">➦</span>
               <span>{title}</span>
             </figcaption>
-            <div className="relative w-full h-96 rounded-md overflow-hidden">
+            <div className="relative w-full h-96 mobile:h-60 rounded-md overflow-hidden">
               <Image src={featuredImage.url} alt={title} layout="fill" />
             </div>
           </figure>
@@ -63,11 +75,19 @@ const Details = ({ post }) => {
             </div>
           </div>
 
-          <div>{content.markdown}</div>
-          {/* rest content print here */}
+          <div className={styles.story_details}>
+            <MDXRemote {...content} />
+          </div>
         </div>
-        <aside className="col-span-1">
-          <div className="sticky top-20 bg-white p-5 rounded-lg">sidebar items</div>
+        <aside className="col-span-1 tablet:col-span-3">
+          <div className="sticky top-20 space-y-5">
+            <div className="space-y-3">
+              <h2 className="text-xl text-white font-semibold">Related Story:</h2>
+              {related.map((i, key) => (
+                <WidgetCard key={key} widget={i} />
+              ))}
+            </div>
+          </div>
         </aside>
       </section>
     </>

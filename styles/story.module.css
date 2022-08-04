@@ -1,0 +1,51 @@
+.story_details {
+  padding-top: 10px;
+  border-top: 1px solid lightgray;
+}
+
+.story_details h1 {
+  font-size: 36px;
+  font-weight: 500;
+}
+.story_details h2 {
+  font-size: 30px;
+}
+
+.story_details h3 {
+  font-size: 28px;
+}
+
+.story_details h4 {
+  font-size: 26px;
+}
+
+.story_details h5 {
+  font-size: 23px;
+}
+
+.story_details h6 {
+  font-size: 20px;
+}
+
+.story_details ul li,
+.story_details p {
+  font-size: 18px;
+}
+
+.story_details ul {
+  list-style: inherit;
+  margin-left: 20px;
+}
+
+.story_details code {
+  display: inline-block;
+  background: lightgrey;
+  padding: 0px 5px;
+  border-radius: 5px;
+}
+
+.story_details img {
+  margin: 20px 0;
+  width: 100%;
+  border-radius: 5px;
+}

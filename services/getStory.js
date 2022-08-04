@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import client from "./client";
 
-const getPost = async (slug) => {
+const getStory = async (slug) => {
   try {
     const { data } = await client.query({
       query: gql`
@@ -21,6 +21,9 @@ const getPost = async (slug) => {
                 url
               }
             }
+            categories {
+              slug
+            }
             createdAt
           }
         }
@@ -32,4 +35,4 @@ const getPost = async (slug) => {
   }
 };
 
-export default getPost;
+export default getStory;
