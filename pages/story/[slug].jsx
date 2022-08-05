@@ -2,7 +2,6 @@ import parse from "html-react-parser";
 import moment from "moment";
 import Head from "next/head";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import React from "react";
 import AuthorCard from "../../components/details/AuthorCard";
 import CommentCard from "../../components/details/CommentCard";
@@ -17,7 +16,7 @@ export const getStaticPaths = async () => {
   const { posts } = await getStories();
   return {
     paths: posts.map(({ slug }) => ({ params: { slug } })),
-    fallback: true,
+    fallback: false,
   };
 };
 
@@ -32,12 +31,6 @@ export const getStaticProps = async ({ params }) => {
 };
 
 const Details = ({ post, related }) => {
-  const router = useRouter();
-
-  if (router.isFallback) {
-    console.log("fallback");
-  }
-
   const { title, featuredImage, author, createdAt, content } = post;
 
   return (
