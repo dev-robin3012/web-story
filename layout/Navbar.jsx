@@ -9,7 +9,7 @@ const Navbar = () => {
         <Link href="/">
           <Image src="/logo.png" alt="logo" height={50} width={200} className="cursor-pointer" />
         </Link>
-        <button className="bg-[#6B58FA] py-2 px-5 text-white">Login</button>
+        {/* <button className="bg-[#6B58FA] py-2 px-5 text-white">Login</button> */}
       </div>
     </nav>
   );

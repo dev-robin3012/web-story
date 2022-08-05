@@ -36,6 +36,20 @@
   list-style: inherit;
   margin-left: 20px;
 }
+.story_details a {
+  color: blue;
+}
+.story_details a:hover {
+  text-decoration: underline;
+}
+
+.story_details pre {
+  width: 100%;
+  background: lightgrey;
+  padding: 10px 10px;
+  border-radius: 5px;
+  font-size: 16px;
+}
 
 .story_details code {
   display: inline-block;

@@ -10,13 +10,14 @@ const getStory = async (slug) => {
             id
             title
             content {
-              markdown
+              html
             }
             featuredImage {
               url
             }
             author {
               name
+              bio
               avatar {
                 url
               }

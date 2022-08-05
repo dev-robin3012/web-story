@@ -7,7 +7,7 @@ const WidgetCard = ({ widget }) => {
   const { featuredImage, title, author, createdAt, slug } = widget;
 
   return (
-    <div className="bg-white p-5 rounded-md flex shadow-lg gap-3">
+    <div className="bg-white p-3 rounded-md flex shadow-lg gap-3">
       <div className={`h-20 w-32 rounded-md relative overflow-hidden`}>
         <Image src={featuredImage.url} alt={title} unoptimized layout="fill" />
       </div>
