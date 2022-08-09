@@ -7,11 +7,11 @@ const AuthModal = () => {
   const { openModal, setOpenModal } = useContext(ModalContext);
   const form = useRef(null);
 
-  const handleAuth = () => {
+  const handleSubmit = () => {
     const name = form.current.name.value;
     const email = form.current.email.value;
 
-    localStorage.setItem("user", JSON.stringify({ name, email }));
+    localStorage.setItem("web_story:user", JSON.stringify({ name, email }));
     setOpenModal(false);
   };
 
@@ -64,7 +64,7 @@ const AuthModal = () => {
                         <Button type="button" variant="cancel" onClick={() => setOpenModal(false)}>
                           Cancel
                         </Button>
-                        <Button type="button" onClick={handleAuth}>
+                        <Button type="button" onClick={handleSubmit}>
                           Submit
                         </Button>
                       </div>

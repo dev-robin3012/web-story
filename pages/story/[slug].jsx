@@ -7,6 +7,7 @@ import AuthorCard from "../../components/details/AuthorCard";
 import CommentCard from "../../components/details/CommentCard";
 import CommentForm from "../../components/details/CommentForm";
 import WidgetCard from "../../components/WidgetCard";
+import getComments from "../../services/getComments";
 import getRelatedStories from "../../services/getRelatedSories";
 import getStories from "../../services/getStories";
 import getStory from "../../services/getStory";
@@ -26,11 +27,12 @@ export const getStaticProps = async ({ params }) => {
   const categories = JSON.stringify(post.categories.map(({ slug }) => slug));
 
   const { posts } = await getRelatedStories({ slug, categories });
+  const { comments } = await getComments(slug);
 
-  return { props: { post, related: posts } };
+  return { props: { post, related: posts, comments } };
 };
 
-const Details = ({ post, related }) => {
+const Details = ({ post, related, comments }) => {
   const { title, featuredImage, author, createdAt, content } = post;
 
   return (
@@ -76,10 +78,10 @@ const Details = ({ post, related }) => {
           </div>
 
           <div className="bg-white p-5 rounded-lg mt-10 space-y-3">
-            <h2 className="text-2xl font-semibold">Discussion (10)</h2>
-            <CommentCard />
-            <CommentCard />
-            <CommentCard />
+            <h2 className="text-2xl font-semibold">Discussion ({comments.length})</h2>
+            {comments.map((item, key) => (
+              <CommentCard key={key} data={item} />
+            ))}
             <CommentForm />
           </div>
         </div>

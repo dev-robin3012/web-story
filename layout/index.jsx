@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react";
-import AuthModal from "../components/Modal";
+import AuthModal from "../components/AuthModal";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
 
