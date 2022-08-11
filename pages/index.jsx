@@ -7,19 +7,13 @@ import WidgetCard from "../components/WidgetCard";
 import getCategories from "../services/getCategories";
 import getFeaturedStories from "../services/getFeaturedStories";
 import getStories from "../services/getStories";
+import getTopStories from "../services/getTopStories";
 import responsive from "../utils/carouselResConfig";
 
 export const getStaticProps = async () => {
   const featured = await getFeaturedStories();
-
   const { posts } = await getStories();
-
-  const topStories = await posts
-    .map((a) => ({ sort: Math.random(), value: a }))
-    .sort((a, b) => a.sort - b.sort)
-    .map((a) => a.value)
-    .slice(0, 3);
-
+  const topStories = await getTopStories();
   const { categories } = await getCategories();
 
   return { props: { featured: featured.posts, stories: posts, topStories, categories } };
@@ -57,7 +51,7 @@ const Home = ({ featured, stories, topStories, categories }) => {
         <aside className="col-span-1 tablet:col-span-3 tablet:mt-10">
           <div className="sticky top-20 space-y-5">
             <div className="space-y-3">
-              <h2 className="text-xl text-white font-semibold">Top Story:</h2>
+              <h2 className="text-xl text-white font-semibold">Top Stories:</h2>
               {topStories.map((story, key) => (
                 <WidgetCard key={key} widget={story} />
               ))}
